@@ -1,5 +1,5 @@
 var screen = require('./client');
-var execSync = require('child_process').execSync;
+const { exec } = require('child_process');
 var fs = require('fs');
 
 var buttonRPi = {
@@ -77,5 +77,12 @@ function updateButtonText(button) {
 
 function execSysCommand(command, callback) {
     console.log("executing "+command);
-    execSync(command);
+    exec(command, (err, stdout, stderr) => {
+        if (err) {
+            return;
+        }
+        if (callback) {
+            callback(stdout);
+        }
+    });
 }
