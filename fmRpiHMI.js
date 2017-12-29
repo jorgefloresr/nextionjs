@@ -42,7 +42,7 @@ function findMp3FilesInDir(path) {
                     tmpPlaylist = tmpPlaylist.concat(findMp3FilesInDir(path + items[i] + "/"));
                     console.log("playlist size: "+tmpPlaylist.length);
                 } else {
-                    console.log("verifying if "+items[i]+" ends with .mp3");
+                    //console.log("verifying if "+items[i]+" ends with .mp3");
                     if(items[i].endsWith("mp3")){
                         console.log("adding "+path+items[i]+" to the playlist");
                         tmpPlaylist.push(path+items[i]);
@@ -52,9 +52,9 @@ function findMp3FilesInDir(path) {
                 }
             }
         });
-        console.log("returningb playlist size: "+tmpPlaylist.length);
-        return tmpPlaylist;
     }
+    console.log("returning playlist size: "+tmpPlaylist.length);
+    return tmpPlaylist;
 }
 
 function createPlaylist(path){
