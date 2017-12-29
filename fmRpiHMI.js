@@ -34,7 +34,7 @@ screen.suscribeById(buttonAux.id, function () {
 function readDir(path) {
     if (fs.lstatSync(path).isDirectory()) {
         fs.readdir(path, function (err, items) {
-            console.log(JSON.stringify(items));
+            console.log(path);
             for (var i = 0; i < items.length; i++) {
                 if (fs.lstatSync(path + items[i]).isDirectory()) {
                     readDir(path + items[i] + "/");
