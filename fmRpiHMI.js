@@ -24,24 +24,29 @@ screen.suscribeById(buttonAux.id, function () {
         buttonAux.text = "playing";
         updateButtonText(buttonAux);
         execSysCommand("./playFromMic.sh");
-    }else{
+    } else {
         buttonAux.text = "aux";
         updateButtonText(buttonAux);
         execSysCommand("killall arecord");
     }
 });
 
-function readDir(path){
-    fs.readdir(path, function(err, items) {
-        console.log(JSON.stringify(items));
-    
-        // for (var i=0; i<items.length; i++) {
-        //     console.log(items[i]);
-        // }
-    });
+function readDir(path) {
+    if (fs.lstatSync(path).isDirectory()) {
+        fs.readdir(path, function (err, items) {
+            console.log(JSON.stringify(items));
+            for (var i = 0; i < items.length; i++) {
+                if (fs.lstatSync(path + items[i]).isDirectory()) {
+                    readDir(path + items[i] + "/");
+                } else {
+                    console.log(items[i]);
+                }
+            }
+        });
+    }
 }
 
-function updateButtonText(button){
+function updateButtonText(button) {
     screen.write.setText(button.name, button.text);
 }
 
