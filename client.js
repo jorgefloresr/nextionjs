@@ -2,9 +2,9 @@
 
 
 Nextion.js for Raspberry Pi / Node.js
+Originally created by Grégory G.
 
-Grégory G.
-
+Slightly modified to support serialport 6.x
 */
 
 var SerialPort = require('serialport');
@@ -60,6 +60,7 @@ function writeUart(cmd){
 
 function readUart(data){
 	console.log(data.join(" "));
+	write.setText("b0","Test");
 }
 
 function hex(str) {
