@@ -40,22 +40,26 @@ function findMp3FilesInDir(path) {
             for (var i = 0; i < items.length; i++) {
                 if (fs.lstatSync(path + items[i]).isDirectory()) {
                     tmpPlaylist = tmpPlaylist.concat(findMp3FilesInDir(path + items[i] + "/"));
+                    console.log("playlist size: "+tmpPlaylist.length);
                 } else {
                     console.log("verifying if "+items[i]+" ends with .mp3");
                     if(items[i].endsWith("mp3")){
                         console.log("adding "+path+items[i]+" to the playlist");
                         tmpPlaylist.push(path+items[i]);
+                        console.log("playlist size: "+tmpPlaylist.length);
                     }
                     //console.log(items[i]);
                 }
             }
         });
+        console.log("returningb playlist size: "+tmpPlaylist.length);
         return tmpPlaylist;
     }
 }
 
 function createPlaylist(path){
     var playList = findMp3FilesInDir(path);
+    console.log("final playlist size: "+playList.length);
     console.log(playList.join("\n"));
 }
 
