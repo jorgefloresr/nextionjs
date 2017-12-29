@@ -64,9 +64,9 @@ function createPlaylist(path){
     var playList = [];
     findMp3FilesInDir(path, function(result){
         playList = result;
+        console.log("final playlist size: "+playList.length);
+        console.log(playList.join("\n"));
     });
-    console.log("final playlist size: "+playList.length);
-    console.log(playList.join("\n"));
 }
 
 function updateButtonText(button) {
