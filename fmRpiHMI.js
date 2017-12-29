@@ -16,7 +16,7 @@ var buttonAux = {
 
 screen.connect();
 screen.suscribeById(buttonRPi.id, function () {
-    readDir("~/music");
+    readDir("/home/pi/music/");
 });
 
 screen.suscribeById(buttonAux.id, function () {
