@@ -29,6 +29,9 @@ function init(){
 	suscribeById("01",function(){
 		console.log("boton 1");
 	});
+	suscribeById("03",function(){
+		console.log("Pedunculo");
+	});
 }
 
 // write.uart("any command");
@@ -65,7 +68,7 @@ function writeUart(cmd){
 }
 
 function readUart(data){
-	console.log(data.join(" "));
+	//console.log(data.join(" "));
 	if(data[0] == 65){
 		var id = data[2];
 		if(listeners[id]){
