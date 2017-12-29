@@ -13,6 +13,8 @@ var port = new SerialPort('/dev/ttyAMA0', {
 	baudRate: 9600
 });
 
+var listeners = {};
+
 function init(){
 	port.on('open', function() {
 		console.log('Port ouvert sur /dev/ttyAMA0 @ 9600 bds');
@@ -22,6 +24,10 @@ function init(){
 	port.on('data', function(byte){
 		var data = byte.toString('hex').match(/.{1,2}/g);
 		readUart(data);
+	});
+
+	suscribeById("01",function(){
+		console.log("boton 1");
 	});
 }
 
@@ -60,7 +66,18 @@ function writeUart(cmd){
 
 function readUart(data){
 	console.log(data.join(" "));
-	write.setText("b0","Test");
+	if(data[0] == 65){
+		var id = data[2];
+		if(listeners[id]){
+			listeners[id].callback();
+		}
+	}
+}
+
+function suscribeById(id, callback){
+	listeners[id] = {
+		"callback": callback 
+	}
 }
 
 function hex(str) {
