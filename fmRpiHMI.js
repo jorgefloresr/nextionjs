@@ -1,6 +1,10 @@
 var screen = require('./client');
 const { exec } = require('child_process');
 var fs = require('fs');
+var Promise = require("promise");
+// Wrap the io functions with ones that return promises.
+var readdir = Promise.convertNodeAsyncFunction(fs.readdir);
+var readfile = Promise.convertNodeAsyncFunction( fs.readFile );
 
 var buttonRPi = {
     id: "01",
@@ -31,33 +35,27 @@ screen.suscribeById(buttonAux.id, function () {
     }
 });
 
-function findMp3FilesInDir(path, callback) {
+function findMp3FilesInDir(path) {
     var tmpPlaylist = [];
     if (fs.lstatSync(path).isDirectory()) {
         console.log(path+" is a directory");
-        fs.readdir(path, function (err, items) {
-            var tmppl = [];
-            console.log(items.length +" files inside");
-            for (var i = 0; i < items.length; i++) {
-                if (fs.lstatSync(path + items[i]).isDirectory()) {
-                    findMp3FilesInDir(path + items[i] + "/", function(result){
-                        tmpPlaylist = tmpPlaylist.concat(result);
-                        console.log("playlist size: "+tmpPlaylist.length);
-                    })
-                } else {
-                    //console.log("verifying if "+items[i]+" ends with .mp3");
-                    if(items[i].endsWith("mp3")){
-                        console.log("adding "+path+items[i]+" to the playlist");
-                        tmpPlaylist.push(path+items[i]);
-                        console.log("playlist size: "+tmpPlaylist.length);
-                    }
-                    //console.log(items[i]);
+        var items = readdir(path);
+        console.log(items.length +" files inside");
+        for (var i = 0; i < items.length; i++) {
+            if (fs.lstatSync(path + items[i]).isDirectory()) {
+                tmpPlaylist = tmpPlaylist.concat(findMp3FilesInDir(path + items[i] + "/"));
+                console.log("playlist size: "+tmpPlaylist.length);
+            } else {
+                if(items[i].endsWith("mp3")){
+                    console.log("adding "+path+items[i]+" to the playlist");
+                    tmpPlaylist.push(path+items[i]);
                 }
             }
-            console.log("returning playlist size: "+tmpPlaylist.length+" from "+path);
-            callback(tmpPlaylist);
-        });
+        }
+        callback(tmpPlaylist);
     }
+    console.log("returning playlist size: "+tmpPlaylist.length+" from "+path);
+    return tmpPlaylist;
 }
 
 function createPlaylist(path){
