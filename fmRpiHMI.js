@@ -18,6 +18,7 @@ screen.connect();
 screen.suscribeById(buttonRPi.id, function () {
     var playlist = createPlaylist("/home/pi/music/");
     playMp3File(playlist[0]);
+    console.log("after play mp3");
     // for(var index in playlist){
         
     // }
@@ -37,6 +38,7 @@ screen.suscribeById(buttonAux.id, function () {
 });
 
 function playMp3File(pathFile){
+    console.log("playing mp3");
     execSysCommand("ffmpeg -i '"+pathFile+"' -f s16le -ar 22.05k -ac 1 - | sudo /home/pi/pifm/pifm - 108.0",function(stdout){
         console.log(stdout);
     });
@@ -65,7 +67,7 @@ function findMp3FilesInDir(path) {
 function createPlaylist(path) {
     var playList = findMp3FilesInDir(path);
     console.log("final playlist size: " + playList.length);
-    console.log(playList.join("\n"));
+    //console.log(playList.join("\n"));
     return playList;
 }
 
