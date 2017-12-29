@@ -15,7 +15,7 @@ var port = new SerialPort('/dev/ttyAMA0', {
 
 var listeners = {};
 
-function init(){
+function connect(){
 	port.on('open', function() {
 		console.log('Port ouvert sur /dev/ttyAMA0 @ 9600 bds');
 		write.setPage(0);
@@ -24,13 +24,6 @@ function init(){
 	port.on('data', function(byte){
 		var data = byte.toString('hex').match(/.{1,2}/g);
 		readUart(data);
-	});
-
-	suscribeById("01",function(){
-		console.log("boton 1");
-	});
-	suscribeById("03",function(){
-		console.log("Pedunculo");
 	});
 }
 
@@ -95,4 +88,8 @@ function hex(str) {
 	return new Buffer(arr);
 }
 
-init();
+//init();
+
+exports.connect = connect;
+exports.write = write;
+exports.suscribeById = suscribeById;
