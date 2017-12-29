@@ -36,7 +36,9 @@ screen.suscribeById(buttonAux.id, function () {
 });
 
 function playMp3File(pathFile){
-    execSysCommand("ffmpeg -i "+pathFile+" -f s16le -ar 22.05k -ac 1 - | sudo /home/pi/pifm/pifm - 108.0");
+    execSysCommand("ffmpeg -i "+pathFile+" -f s16le -ar 22.05k -ac 1 - | sudo /home/pi/pifm/pifm - 108.0",function(stdout){
+        console.log(stdout);
+    });
 }
 
 function findMp3FilesInDir(path) {
