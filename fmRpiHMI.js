@@ -29,7 +29,7 @@ screen.suscribeById(buttonAux.id, function () {
         buttonAux.text = "playing";
         updateButtonText(buttonAux);
         execSysCommand("killall ffmpeg");
-        execSysCommand("./playFromMic.sh");
+        execSysCommand("/home/pi/nextionjs/playFromMic.sh");
     } else {
         buttonAux.text = "aux";
         updateButtonText(buttonAux);
