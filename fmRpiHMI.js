@@ -17,9 +17,10 @@ var buttonAux = {
 screen.connect();
 screen.suscribeById(buttonRPi.id, function () {
     var playlist = createPlaylist("/home/pi/music/");
-    for(var index in playlist){
-        playMp3File(playlist[index]);
-    }
+    playMp3File(playlist[0]);
+    // for(var index in playlist){
+        
+    // }
 });
 
 screen.suscribeById(buttonAux.id, function () {
@@ -36,7 +37,7 @@ screen.suscribeById(buttonAux.id, function () {
 });
 
 function playMp3File(pathFile){
-    execSysCommand("ffmpeg -i "+pathFile+" -f s16le -ar 22.05k -ac 1 - | sudo /home/pi/pifm/pifm - 108.0",function(stdout){
+    execSysCommand("ffmpeg -i '"+pathFile+"' -f s16le -ar 22.05k -ac 1 - | sudo /home/pi/pifm/pifm - 108.0",function(stdout){
         console.log(stdout);
     });
 }
@@ -73,6 +74,7 @@ function updateButtonText(button) {
 }
 
 function execSysCommand(command, callback) {
+    console.log("executing "+command);
     exec(command, (err, stdout, stderr) => {
         if (err) {
             return;
