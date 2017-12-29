@@ -10,7 +10,7 @@ screen.suscribeById("03",function(){
     console.log("boton 2 ok");
 });
 
-exec('cat *.js | wc -l', (err, stdout, stderr) => {
+exec('./playFromMic.sh', (err, stdout, stderr) => {
     if (err) {
       // node couldn't execute the command
       return;
