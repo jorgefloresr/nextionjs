@@ -31,16 +31,19 @@ screen.suscribeById(buttonAux.id, function () {
     }
 });
 
-function findMp3FilesInDir(path) {
+function findMp3FilesInDir(path, callback) {
     var tmpPlaylist = [];
     if (fs.lstatSync(path).isDirectory()) {
         console.log(path+" is a directory");
         fs.readdir(path, function (err, items) {
+            var tmppl = [];
             console.log(items.length +" files inside");
             for (var i = 0; i < items.length; i++) {
                 if (fs.lstatSync(path + items[i]).isDirectory()) {
-                    tmpPlaylist = tmpPlaylist.concat(findMp3FilesInDir(path + items[i] + "/"));
-                    console.log("playlist size: "+tmpPlaylist.length);
+                    findMp3FilesInDir(path + items[i] + "/", function(result){
+                        tmpPlaylist = tmpPlaylist.concat(result);
+                        console.log("playlist size: "+tmpPlaylist.length);
+                    })
                 } else {
                     //console.log("verifying if "+items[i]+" ends with .mp3");
                     if(items[i].endsWith("mp3")){
@@ -51,14 +54,17 @@ function findMp3FilesInDir(path) {
                     //console.log(items[i]);
                 }
             }
+            console.log("returning playlist size: "+tmpPlaylist.length+" from "+path);
+            callback(tmpPlaylist);
         });
     }
-    console.log("returning playlist size: "+tmpPlaylist.length);
-    return tmpPlaylist;
 }
 
 function createPlaylist(path){
-    var playList = findMp3FilesInDir(path);
+    var playList = [];
+    findMp3FilesInDir(path, function(result){
+        playList = result;
+    });
     console.log("final playlist size: "+playList.length);
     console.log(playList.join("\n"));
 }
