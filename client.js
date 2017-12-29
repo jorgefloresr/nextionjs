@@ -18,7 +18,7 @@ var listeners = {};
 function connect(){
 	console.log("connect");
 	port.on('open', function() {
-		console.log('Port ouvert sur /dev/ttyAMA0 @ 9600 bds');
+		console.log('Port open /dev/ttyAMA0 @ 9600 bds');
 		write.setPage(0);
 	});
 
