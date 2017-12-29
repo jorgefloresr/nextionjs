@@ -16,6 +16,7 @@ var port = new SerialPort('/dev/ttyAMA0', {
 var listeners = {};
 
 function connect(){
+	console.log("connect");
 	port.on('open', function() {
 		console.log('Port ouvert sur /dev/ttyAMA0 @ 9600 bds');
 		write.setPage(0);
