@@ -38,7 +38,7 @@ function findMp3FilesInDir(path) {
             console.log(path);
             for (var i = 0; i < items.length; i++) {
                 if (fs.lstatSync(path + items[i]).isDirectory()) {
-                    tmpPlaylist = tmpPlaylist.concat(readDir(path + items[i] + "/"));
+                    tmpPlaylist = tmpPlaylist.concat(findMp3FilesInDir(path + items[i] + "/"));
                 } else {
                     if(items[i].endsWith(".mp3")){
                         tmpPlaylist.push(path+items[i]);
