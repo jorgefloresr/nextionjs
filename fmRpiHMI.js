@@ -33,11 +33,11 @@ screen.suscribeById(buttonAux.id, function () {
 
 function readDir(path){
     fs.readdir(path, function(err, items) {
-        console.log(items);
+        console.log(JSON.stringify(items));
     
-        for (var i=0; i<items.length; i++) {
-            console.log(items[i]);
-        }
+        // for (var i=0; i<items.length; i++) {
+        //     console.log(items[i]);
+        // }
     });
 }
 
