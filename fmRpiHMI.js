@@ -16,13 +16,17 @@ var buttonAux = {
 
 screen.connect();
 screen.suscribeById(buttonRPi.id, function () {
-    createPlaylist("/home/pi/music/");
+    var playlist = createPlaylist("/home/pi/music/");
+    for(var index in playlist){
+        playMp3File(playlist[index]);
+    }
 });
 
 screen.suscribeById(buttonAux.id, function () {
     if (buttonAux.text == "aux") {
         buttonAux.text = "playing";
         updateButtonText(buttonAux);
+        execSysCommand("killall ffmpeg");
         execSysCommand("./playFromMic.sh");
     } else {
         buttonAux.text = "aux";
@@ -30,6 +34,10 @@ screen.suscribeById(buttonAux.id, function () {
         execSysCommand("killall arecord");
     }
 });
+
+function playMp3File(pathFile){
+    execSysCommand("ffmpeg -i "+pathFile+" -f s16le -ar 22.05k -ac 1 - | sudo /home/pi/pifm/pifm - 108.0");
+}
 
 function findMp3FilesInDir(path) {
     var tmpPlaylist = [];
@@ -40,10 +48,8 @@ function findMp3FilesInDir(path) {
         for (var i = 0; i < items.length; i++) {
             if (fs.lstatSync(path + items[i]).isDirectory()) {
                 tmpPlaylist = tmpPlaylist.concat(findMp3FilesInDir(path + items[i] + "/"));
-                console.log("playlist size: " + tmpPlaylist.length);
             } else {
                 if (items[i].endsWith("mp3")) {
-                    console.log("adding " + path + items[i] + " to the playlist");
                     tmpPlaylist.push(path + items[i]);
                 }
             }
@@ -57,6 +63,7 @@ function createPlaylist(path) {
     var playList = findMp3FilesInDir(path);
     console.log("final playlist size: " + playList.length);
     console.log(playList.join("\n"));
+    return playList;
 }
 
 function updateButtonText(button) {
