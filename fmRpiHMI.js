@@ -16,7 +16,7 @@ var buttonAux = {
 
 screen.connect();
 screen.suscribeById(buttonRPi.id, function () {
-    readDir("/home/pi/music/");
+    createPlaylist("/home/pi/music/");
 });
 
 screen.suscribeById(buttonAux.id, function () {
@@ -31,19 +31,29 @@ screen.suscribeById(buttonAux.id, function () {
     }
 });
 
-function readDir(path) {
+function findMp3FilesInDir(path) {
+    var tmpPlaylist = [];
     if (fs.lstatSync(path).isDirectory()) {
         fs.readdir(path, function (err, items) {
             console.log(path);
             for (var i = 0; i < items.length; i++) {
                 if (fs.lstatSync(path + items[i]).isDirectory()) {
-                    readDir(path + items[i] + "/");
+                    tmpPlaylist = tmpPlaylist.concat(readDir(path + items[i] + "/"));
                 } else {
-                    console.log(items[i]);
+                    if(items[i].endsWith(".mp3")){
+                        tmpPlaylist.push(path+items[i]);
+                    }
+                    //console.log(items[i]);
                 }
             }
         });
     }
+    return tmpPlaylist;
+}
+
+function createPlaylist(path){
+    var playList = findMp3FilesInDir(path);
+    console.log(playList.join("\n"));
 }
 
 function updateButtonText(button) {
