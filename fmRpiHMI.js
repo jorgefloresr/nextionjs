@@ -66,6 +66,7 @@ screen.suscribeById(buttonNext.id, function () {
     if (playlist.index < playlist.length) {
         playlist.playing = false;
         execSysCommand("killall ffmpeg", function(stdout){
+            console.log("killed!!");
             playNextSong();
         });
     }
@@ -92,7 +93,6 @@ function playNextSong(delay) {
 }
 
 function playMp3File(pathFile, callback) {
-    console.log("playing mp3");
     execSysCommand("ffmpeg -i '" + pathFile + "' -f s16le -ar 22.05k -ac 1 - | sudo /home/pi/pifm/pifm - 108.0", function (stdout) {
         console.log(stdout);
         callback();
