@@ -64,9 +64,11 @@ screen.suscribeById(buttonAux.id, function () {
     if (buttonAux.text == "aux") {
         buttonAux.text = "playing";
         updateButtonText(buttonAux);
+        playlist.playing = false;
         execSysCommand("killall ffmpeg");
-        sleep.msleep(3000);
-        execSysCommand("/home/pi/nextionjs/playFromMic.sh");
+        sleepAsync.sleep(3000,function(){
+            execSysCommand("/home/pi/nextionjs/playFromMic.sh");
+        });
     } else {
         buttonAux.text = "aux";
         updateButtonText(buttonAux);
