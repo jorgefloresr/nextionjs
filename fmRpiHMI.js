@@ -19,6 +19,18 @@ var buttonAux = {
     text: "aux"
 }
 
+var buttonPrev = {
+    id: "04",
+    name: "bprev",
+    text: "<- prev"
+}
+
+var buttonNext = {
+    id: "03",
+    name: "bnext",
+    text: "next ->"
+}
+
 var playlist = {
     playlist: [],
     index: 0,
@@ -27,16 +39,19 @@ var playlist = {
 
 screen.connect();
 screen.suscribeById(buttonRPi.id, function () {
+    screen.write.setPage(2);
     playlist.playlist = createPlaylist("/home/pi/music/");
     playlist.index = 0;
     playlist.length = playlist.playlist.length;
     playNextSong();
 });
+
 screen.suscribeById(buttonAux.id, function () {
     if (buttonAux.text == "aux") {
         buttonAux.text = "playing";
         updateButtonText(buttonAux);
         execSysCommand("killall ffmpeg");
+        sleep.sleep(1);
         execSysCommand("/home/pi/nextionjs/playFromMic.sh");
     } else {
         buttonAux.text = "aux";
@@ -45,15 +60,26 @@ screen.suscribeById(buttonAux.id, function () {
     }
 });
 
+screen.suscribeById(buttonNext.id, function(){
+    playlist.index = playlist.index + 1;
+    if(playlist.index < playlist.length){
+        execSysCommand("killall ffmpeg");
+        sleep.sleep(1);
+        playNextSong();
+    }
+});
+
 function playNextSong(){
-    console.log("playing "+playlist.playlist[playlist.index]);
-    playMp3File(playlist.playlist[playlist.index], function(){
+    console.log("playing "+playlist.playlist[playlist.index].name);
+    screen.write.setText("g0", playlist.playlist[playlist.index].name);
+    playMp3File(playlist.playlist[playlist.index].path, function(){
         playlist.index = playlist.index + 1;
         if(playlist.index < playlist.length){
             playNextSong();
         }
     });
 }
+
 function playMp3File(pathFile, callback){
     console.log("playing mp3");
     execSysCommand("ffmpeg -i '"+pathFile+"' -f s16le -ar 22.05k -ac 1 - | sudo /home/pi/pifm/pifm - 108.0",function(stdout){
@@ -73,7 +99,10 @@ function findMp3FilesInDir(path) {
                 tmpPlaylist = tmpPlaylist.concat(findMp3FilesInDir(path + items[i] + "/"));
             } else {
                 if (items[i].endsWith("mp3")) {
-                    tmpPlaylist.push(path + items[i]);
+                    tmpPlaylist.push({
+                        "path": path + items[i],
+                        "name": items[i]
+                    });
                 }
             }
         }
