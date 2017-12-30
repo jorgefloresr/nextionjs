@@ -4,7 +4,7 @@ var fs = require('fs');
 var sleep = require('sleep');
 
 console.log("waiting");
-sleep.sleep(15);
+//sleep.sleep(15);
 console.log("ready");
 
 var buttonRPi = {
