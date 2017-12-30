@@ -67,6 +67,7 @@ screen.suscribeById(buttonNext.id, function () {
         playlist.playing = false;
         execSysCommand("killall ffmpeg", function(stdout){
             console.log("killed!!");
+            sleep.msleep(15000);
             playNextSong();
         });
     }
