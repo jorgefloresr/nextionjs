@@ -32,17 +32,6 @@ screen.suscribeById(buttonRPi.id, function () {
     playlist.length = playlist.playlist.length;
     playNextSong();
 });
-
-function playNextSong(){
-    console.log("playing "+playlist.playlist[index]);
-    playMp3File(playlist.playlist[index], function(){
-        playlist.index = playlist.index + 1;
-        if(playlist.index < playlist.length){
-            playNextSong();
-        }
-    });
-}
-
 screen.suscribeById(buttonAux.id, function () {
     if (buttonAux.text == "aux") {
         buttonAux.text = "playing";
@@ -56,6 +45,15 @@ screen.suscribeById(buttonAux.id, function () {
     }
 });
 
+function playNextSong(){
+    console.log("playing "+playlist.playlist[playlist.index]);
+    playMp3File(playlist.playlist[playlist.index], function(){
+        playlist.index = playlist.index + 1;
+        if(playlist.index < playlist.length){
+            playNextSong();
+        }
+    });
+}
 function playMp3File(pathFile, callback){
     console.log("playing mp3");
     execSysCommand("ffmpeg -i '"+pathFile+"' -f s16le -ar 22.05k -ac 1 - | sudo /home/pi/pifm/pifm - 108.0",function(stdout){
