@@ -34,7 +34,8 @@ var buttonNext = {
 var playlist = {
     playlist: [],
     index: 0,
-    length: 0
+    length: 0,
+    playing: false
 };
 
 screen.connect();
@@ -63,16 +64,21 @@ screen.suscribeById(buttonAux.id, function () {
 screen.suscribeById(buttonNext.id, function(){
     playlist.index = playlist.index + 1;
     if(playlist.index < playlist.length){
+        playlist.playing = false;
         execSysCommand("killall ffmpeg");
-        sleep.sleep(1);
+        sleep.sleep(3);
         playNextSong();
     }
 });
 
 function playNextSong(){
+    playlist.playing = true;
     console.log("playing "+playlist.playlist[playlist.index].name);
     screen.write.setText("g0", playlist.playlist[playlist.index].name);
     playMp3File(playlist.playlist[playlist.index].path, function(){
+        if(!playlist.playing){
+            return;
+        }
         playlist.index = playlist.index + 1;
         if(playlist.index < playlist.length){
             playNextSong();
