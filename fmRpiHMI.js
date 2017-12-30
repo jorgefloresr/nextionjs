@@ -61,9 +61,9 @@ screen.suscribeById(buttonAux.id, function () {
     }
 });
 
-screen.suscribeById(buttonNext.id, function(){
+screen.suscribeById(buttonNext.id, function () {
     playlist.index = playlist.index + 1;
-    if(playlist.index < playlist.length){
+    if (playlist.index < playlist.length) {
         playlist.playing = false;
         execSysCommand("killall ffmpeg");
         sleep.sleep(10);
@@ -71,24 +71,25 @@ screen.suscribeById(buttonNext.id, function(){
     }
 });
 
-function playNextSong(){
+function playNextSong() {
     playlist.playing = true;
-    console.log("playing "+playlist.playlist[playlist.index].name);
+    console.log("playing " + playlist.playlist[playlist.index].name);
     screen.write.setText("g0", playlist.playlist[playlist.index].name);
-    playMp3File(playlist.playlist[playlist.index].path, function(){
-        if(!playlist.playing){
-            return;
+    playMp3File(playlist.playlist[playlist.index].path, function () {
+        console.log("playlist.playing:"+playlist.playing);
+        if (playlist.playing) {
+            playlist.index = playlist.index + 1;
+            if (playlist.index < playlist.length) {
+                playNextSong();
+            }
         }
-        playlist.index = playlist.index + 1;
-        if(playlist.index < playlist.length){
-            playNextSong();
-        }
+        return;
     });
 }
 
-function playMp3File(pathFile, callback){
+function playMp3File(pathFile, callback) {
     console.log("playing mp3");
-    execSysCommand("ffmpeg -i '"+pathFile+"' -f s16le -ar 22.05k -ac 1 - | sudo /home/pi/pifm/pifm - 108.0",function(stdout){
+    execSysCommand("ffmpeg -i '" + pathFile + "' -f s16le -ar 22.05k -ac 1 - | sudo /home/pi/pifm/pifm - 108.0", function (stdout) {
         console.log(stdout);
         callback();
     });
@@ -129,7 +130,7 @@ function updateButtonText(button) {
 }
 
 function execSysCommand(command, callback) {
-    console.log("executing "+command);
+    console.log("executing " + command);
     exec(command, (err, stdout, stderr) => {
         if (err) {
             return;
