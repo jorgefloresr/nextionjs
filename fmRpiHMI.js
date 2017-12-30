@@ -75,6 +75,19 @@ screen.suscribeById(buttonNext.id, function () {
     }
 });
 
+screen.suscribeById(buttonPrev.id, function () {
+    playlist.index = playlist.index - 1;
+    if (playlist.index > -1) {
+        playlist.playing = false;
+        execSysCommand("killall ffmpeg", function(stdout){
+            console.log("killed!!");
+            sleepAsync.sleep(3000, function(){
+                playNextSong();
+            });
+        });
+    }
+});
+
 function playNextSong(delay) {
     if(delay){
         console.log("waiting "+delay+" seconds");
