@@ -1,3 +1,5 @@
+import { fail } from 'assert';
+
 var screen = require('./client');
 const { exec } = require('child_process');
 var fs = require('fs');
@@ -65,8 +67,9 @@ screen.suscribeById(buttonNext.id, function () {
     playlist.index = playlist.index + 1;
     if (playlist.index < playlist.length) {
         playlist.playing = false;
-        execSysCommand("killall ffmpeg");
-        playNextSong(5000);
+        execSysCommand("killall ffmpeg", function(stdout){
+            playNextSong();
+        });
     }
 });
 
