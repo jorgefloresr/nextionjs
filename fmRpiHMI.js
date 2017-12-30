@@ -36,7 +36,8 @@ var playlist = {
     playlist: [],
     index: 0,
     length: 0,
-    playing: false
+    playing: false,
+    killing: false
 };
 
 screen.connect();
@@ -64,40 +65,43 @@ screen.suscribeById(buttonAux.id, function () {
 
 screen.suscribeById(buttonNext.id, function () {
     playlist.index = playlist.index + 1;
-    if (playlist.index < playlist.length) {
-        playlist.playing = false;
-        execSysCommand("killall ffmpeg", function(stdout){
-            console.log("killed!!");
-            sleepAsync.sleep(3000, function(){
-                playNextSong();
-            });
-        });
-    }
+    playlist.index = (playlist.index >= playlist.length) ? (playlist.length - 1) : playlist.index;
+    playlist.playing = false;
+    screen.write.setText("g0", playlist.playlist[playlist.index].name);
+    killActualSongAndPlayNext();
 });
 
 screen.suscribeById(buttonPrev.id, function () {
     playlist.index = playlist.index - 1;
-    if (playlist.index > -1) {
-        playlist.playing = false;
-        execSysCommand("killall ffmpeg", function(stdout){
+    playlist.index = (playlist.index < 0) ? 0 : playlist.index;
+    playlist.playing = false;
+    screen.write.setText("g0", playlist.playlist[playlist.index].name);
+    killActualSongAndPlayNext();
+});
+
+function killActualSongAndPlayNext() {
+    if (!playlist.killing) {
+        playlist.killing = true;
+        execSysCommand("killall ffmpeg", function (stdout) {
             console.log("killed!!");
-            sleepAsync.sleep(3000, function(){
+            sleepAsync.sleep(3000, function () {
+                playlist.killing = false;
                 playNextSong();
             });
         });
     }
-});
+}
 
 function playNextSong(delay) {
-    if(delay){
-        console.log("waiting "+delay+" seconds");
+    if (delay) {
+        console.log("waiting " + delay + " seconds");
         sleep.sleep(delay);
     }
     playlist.playing = true;
     console.log("playing " + playlist.playlist[playlist.index].name);
     screen.write.setText("g0", playlist.playlist[playlist.index].name);
     playMp3File(playlist.playlist[playlist.index].path, function () {
-        console.log("playlist.playing:"+playlist.playing);
+        console.log("playlist.playing:" + playlist.playing);
         if (playlist.playing) {
             playlist.index = playlist.index + 1;
             if (playlist.index < playlist.length) {
