@@ -64,7 +64,7 @@ function writeUart(cmd){
 function readUart(data){
 	console.log(data.join(" "));
 	if(data[0] == 65){
-		var id = data[2];
+		var id = data[1]+""+data[2];
 		if(listeners[id]){
 			listeners[id].callback();
 		}

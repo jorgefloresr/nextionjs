@@ -9,27 +9,33 @@ sleep.msleep(5000);
 console.log("ready");
 
 var buttonRPi = {
-    id: "01",
+    id: "0101",
     name: "b0",
     text: "RPi"
 }
 
 var buttonAux = {
-    id: "03",
+    id: "0103",
     name: "b1",
     text: "aux"
 }
 
 var buttonPrev = {
-    id: "04",
+    id: "0204",
     name: "bprev",
     text: "<- prev"
 }
 
 var buttonNext = {
-    id: "03",
+    id: "0203",
     name: "bnext",
     text: "next ->"
+}
+
+var buttonHome = {
+    id: "0205",
+    name: "bhome",
+    text: "home"
 }
 
 var playlist = {
@@ -41,6 +47,11 @@ var playlist = {
 };
 
 screen.connect();
+
+screen.suscribeById(buttonHome.id, function(){
+    screen.write.setPage(1);
+});
+
 screen.suscribeById(buttonRPi.id, function () {
     screen.write.setPage(2);
     playlist.playlist = createPlaylist("/home/pi/music/");
