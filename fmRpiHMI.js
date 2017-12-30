@@ -2,7 +2,7 @@ var screen = require('./client');
 const { exec } = require('child_process');
 var fs = require('fs');
 var sleep = require('sleep');
-var sleepAsync = require('sleep-async');
+var sleepAsync = require('sleep-async')();
 
 console.log("waiting");
 //sleep.sleep(15);
