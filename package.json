@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "serialport": "^6.0.4"
+    "serialport": "^6.0.4",
+    "sleep": "^5.1.1",
+    "sleep-async": "^1.0.1"
   }
 }
