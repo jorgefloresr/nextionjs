@@ -66,13 +66,15 @@ screen.suscribeById(buttonNext.id, function () {
     if (playlist.index < playlist.length) {
         playlist.playing = false;
         execSysCommand("killall ffmpeg");
-        sleep.sleep(10);
-        console.log("ready to play next song");
-        playNextSong();
+        playNextSong(5);
     }
 });
 
-function playNextSong() {
+function playNextSong(delay) {
+    if(delay){
+        console.log("waiting "+delay+" seconds");
+        sleep.sleep(delay);
+    }
     playlist.playing = true;
     console.log("playing " + playlist.playlist[playlist.index].name);
     screen.write.setText("g0", playlist.playlist[playlist.index].name);
