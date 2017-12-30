@@ -1,6 +1,11 @@
 var screen = require('./client');
 const { exec } = require('child_process');
 var fs = require('fs');
+var sleep = require('sleep');
+
+console.log("waiting");
+sleep.sleep(15);
+console.log("ready");
 
 var buttonRPi = {
     id: "01",

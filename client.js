@@ -19,7 +19,7 @@ function connect(){
 	console.log("connect");
 	port.on('open', function() {
 		console.log('Port open /dev/ttyAMA0 @ 9600 bds');
-		write.setPage(0);
+		write.setPage(1);
 	});
 
 	port.on('data', function(byte){
