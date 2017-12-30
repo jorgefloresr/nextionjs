@@ -122,7 +122,7 @@ function playNextSong() {
 }
 
 function playMp3File(pathFile, callback) {
-    execSysCommand("ffmpeg -i '" + pathFile + "' -f s16le -ar 22.05k -ac 1 - | sudo /home/pi/pifm/pifm - 107.0", function (stdout) {
+    execSysCommand("ffmpeg -i '" + pathFile + "' -f s16le -ar 22.05k -ac 1 - | sudo /home/pi/pifm/pifm - 107.5", function (stdout) {
         console.log(stdout);
         callback();
     });
