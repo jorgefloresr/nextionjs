@@ -2,6 +2,7 @@ var screen = require('./client');
 const { exec } = require('child_process');
 var fs = require('fs');
 var sleep = require('sleep');
+var sleepAsync = require('sleep-async');
 
 console.log("waiting");
 //sleep.sleep(15);
@@ -67,8 +68,9 @@ screen.suscribeById(buttonNext.id, function () {
         playlist.playing = false;
         execSysCommand("killall ffmpeg", function(stdout){
             console.log("killed!!");
-            sleep.msleep(15000);
-            playNextSong();
+            sleepAsync.sleep(3000, function(){
+                playNextSong();
+            });
         });
     }
 });
