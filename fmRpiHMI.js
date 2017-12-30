@@ -5,7 +5,7 @@ var sleep = require('sleep');
 var sleepAsync = require('sleep-async')();
 
 console.log("waiting");
-//sleep.sleep(15);
+sleep.msleep(5000);
 console.log("ready");
 
 var buttonRPi = {
@@ -54,7 +54,7 @@ screen.suscribeById(buttonAux.id, function () {
         buttonAux.text = "playing";
         updateButtonText(buttonAux);
         execSysCommand("killall ffmpeg");
-        sleep.sleep(3);
+        sleep.msleep(3000);
         execSysCommand("/home/pi/nextionjs/playFromMic.sh");
     } else {
         buttonAux.text = "aux";
@@ -92,11 +92,7 @@ function killActualSongAndPlayNext() {
     }
 }
 
-function playNextSong(delay) {
-    if (delay) {
-        console.log("waiting " + delay + " seconds");
-        sleep.sleep(delay);
-    }
+function playNextSong() {
     playlist.playing = true;
     console.log("playing " + playlist.playlist[playlist.index].name);
     screen.write.setText("g0", playlist.playlist[playlist.index].name);
@@ -113,7 +109,7 @@ function playNextSong(delay) {
 }
 
 function playMp3File(pathFile, callback) {
-    execSysCommand("ffmpeg -i '" + pathFile + "' -f s16le -ar 22.05k -ac 1 - | sudo /home/pi/pifm/pifm - 108.0", function (stdout) {
+    execSysCommand("ffmpeg -i '" + pathFile + "' -f s16le -ar 22.05k -ac 1 - | sudo /home/pi/pifm/pifm - 107.0", function (stdout) {
         console.log(stdout);
         callback();
     });
