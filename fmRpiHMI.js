@@ -52,7 +52,7 @@ screen.suscribeById(buttonAux.id, function () {
         buttonAux.text = "playing";
         updateButtonText(buttonAux);
         execSysCommand("killall ffmpeg");
-        sleep.sleep(1);
+        sleep.sleep(3);
         execSysCommand("/home/pi/nextionjs/playFromMic.sh");
     } else {
         buttonAux.text = "aux";
@@ -67,7 +67,8 @@ screen.suscribeById(buttonNext.id, function () {
         playlist.playing = false;
         execSysCommand("killall ffmpeg");
         sleep.sleep(10);
-        //playNextSong();
+        console.log("ready to play next song");
+        playNextSong();
     }
 });
 
