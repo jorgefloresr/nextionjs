@@ -1,5 +1,3 @@
-import { fail } from 'assert';
-
 var screen = require('./client');
 const { exec } = require('child_process');
 var fs = require('fs');
