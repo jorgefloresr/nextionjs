@@ -66,7 +66,7 @@ screen.suscribeById(buttonAux.id, function () {
         updateButtonText(buttonAux);
         playlist.playing = false;
         execSysCommand("killall ffmpeg");
-        sleepAsync.sleep(2000,function(){
+        sleepAsync.sleep(3000,function(){
             execSysCommand("/home/pi/nextionjs/playFromMic.sh");
         });
     } else {
@@ -97,7 +97,7 @@ function killActualSongAndPlayNext() {
         playlist.killing = true;
         execSysCommand("killall ffmpeg", function (stdout) {
             console.log("killed!!");
-            sleepAsync.sleep(2000, function () {
+            sleepAsync.sleep(3000, function () {
                 playlist.killing = false;
                 playNextSong();
             });
